@@ -2,7 +2,13 @@ import hmacSHA512 from 'crypto-js/hmac-sha512';
 import stringify from 'qs/lib/stringify';
 import config from './config';
 
-export default (url, params = {}) => {
+/**
+ *
+ * @param {String} url
+ * @param {Object} [params]
+ * @return {Promise.<Object|Array.<*>>}
+ */
+export default ( url, params = {} ) => {
   const nonce = new Date().getTime();
   const fullParams = {
     ...params,
@@ -18,5 +24,7 @@ export default (url, params = {}) => {
       'content-type': 'application/x-www-form-urlencoded',
     }),
   };
-  return fetch(config.PROXY_URL + fullUrl, options).then(response => response.json());
+  return fetch(config.PROXY_URL + fullUrl, options)
+    .then(response => response.json())
+    .then(response => response.result);
 }
