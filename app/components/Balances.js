@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { loadBalances, loadMaketSUmmaries, loadOpenOrders } from "../redux/actions";
 
 class Balances extends React.PureComponent {
-  constructor( props ) {
+  constructor(props) {
     super(props);
     this.state = {
       balances: null,
@@ -11,29 +10,31 @@ class Balances extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(loadBalances());
-    dispatch(loadOpenOrders());
-    dispatch(loadMaketSUmmaries());
     this.updateBalances(this.props);
   }
 
-  componentWillReceiveProps( nextProps ) {
+  componentWillReceiveProps(nextProps) {
     this.updateBalances(nextProps);
   }
 
-  updateBalances( props ) {
-    const { openOrders, balances } = props;
-    if (!openOrders || !balances) return;
+  updateBalances(props) {
+    const { openOrders, balances, marketSummaries } = props;
+    if (!openOrders || !balances || !marketSummaries) return;
     const availableBalances = balances
       .filter(balance => balance.Balance)
-      .map(( balance ) => ({
-        currency:  balance.Currency,
-        balance:   balance.Balance,
-        available: balance.Available,
-        pending:   balance.Pending,
-        reserved:  openOrders.find(order => order.Exchange === `BTC-${balance.Currency}` && order.OrderType === 'LIMIT_SELL'),
-      }));
+      .map((balance) => {
+        const marketName = `BTC-${balance.Currency}`;
+        const marketSummary = marketSummaries.find(market => market.MarketName === marketName);
+        return ({
+          currency:  balance.Currency,
+          balance:   balance.Balance,
+          available: balance.Available,
+          pending:   balance.Pending,
+          reserved:  openOrders.find(order => order.Exchange === marketName && order.OrderType === 'LIMIT_SELL'),
+          btcValue:  marketSummary ? marketSummary.Last * balance.Balance : balance.Balance,
+        });
+      })
+      .sort((a, b) => b.btcValue - a.btcValue);
     this.setState({ balances: availableBalances });
   }
 
@@ -43,34 +44,37 @@ class Balances extends React.PureComponent {
     return (
       <table className="table">
         <thead>
-        <tr>
-          <th>#</th>
-          <th>currency</th>
-          <th>balance</th>
-          <th>available</th>
-          <th>pending</th>
-          <th>reserved</th>
-        </tr>
+          <tr>
+            <th>#</th>
+            <th>currency</th>
+            <th>balance</th>
+            <th>available</th>
+            <th>pending</th>
+            <th>reserved</th>
+            <th>BTC value</th>
+          </tr>
         </thead>
         <tbody>
-        {balances.map(( balance, i ) => (
-          <tr key={balance.currency}>
-            <td><b>{i + 1}</b></td>
-            <td>{balance.currency}</td>
-            <td>{balance.balance}</td>
-            <td>{balance.available}</td>
-            <td>{balance.pending}</td>
-            <td>{balance.reserved && balance.reserved.QuantityRemaining}</td>
-          </tr>
-        ))}
+          {balances.map((balance, i) => (
+            <tr key={balance.currency}>
+              <td><b>{i + 1}</b></td>
+              <td>{balance.currency}</td>
+              <td>{balance.balance.toFixed(8)}</td>
+              <td>{balance.available.toFixed(8)}</td>
+              <td>{balance.pending.toFixed(8)}</td>
+              <td>{balance.reserved && balance.reserved.QuantityRemaining.toFixed(8)}</td>
+              <td>{balance.btcValue.toFixed(8)}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     );
   }
 }
 
-const mapStateToProps = ( state ) => ({
-  balances:   state.balances,
-  openOrders: state.openOrders,
+const mapStateToProps = (state) => ({
+  balances:        state.balances,
+  openOrders:      state.openOrders,
+  marketSummaries: state.marketSummaries,
 });
 export default connect(mapStateToProps)(Balances);
