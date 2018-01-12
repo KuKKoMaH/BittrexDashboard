@@ -19,18 +19,18 @@ class Balances extends React.PureComponent {
 
   updateBalances(props) {
     const { openOrders, balances, marketSummaries } = props;
-    if (!openOrders || !balances || !marketSummaries) return;
+    if (!balances) return;
     const availableBalances = balances
       .filter(balance => balance.Balance)
       .map((balance) => {
         const marketName = `BTC-${balance.Currency}`;
-        const marketSummary = marketSummaries.find(market => market.MarketName === marketName);
+        const marketSummary = marketSummaries && marketSummaries.find(market => market.MarketName === marketName);
         return ({
           currency:  balance.Currency,
           balance:   balance.Balance,
           available: balance.Available,
           pending:   balance.Pending,
-          reserved:  openOrders.find(order => order.Exchange === marketName && order.OrderType === 'LIMIT_SELL'),
+          reserved:  openOrders && openOrders.find(order => order.Exchange === marketName && order.OrderType === 'LIMIT_SELL'),
           btcValue:  marketSummary ? marketSummary.Last * balance.Balance : balance.Balance,
         });
       })

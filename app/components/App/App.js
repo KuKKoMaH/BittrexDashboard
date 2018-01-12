@@ -1,8 +1,10 @@
 import React from 'react';
-import { loadBalances, loadMarketSummaries, loadOpenOrders } from '../redux/actions';
+import { loadBalances, loadMarketSummaries, loadOpenOrders } from '../../redux/actions';
 import { connect } from 'react-redux';
-import Balances from './Balances';
-import Total from './Total';
+import Balances from '../Balances';
+import Total from '../Total';
+import Reload from '../Reload/Reload';
+import style from './App.styl';
 
 class App extends React.Component {
   constructor(props) {
@@ -18,9 +20,10 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className={style.app}>
         <Total />
         <Balances />
+        <Reload />
       </div>
     );
   }
