@@ -46,6 +46,6 @@ class Total extends React.PureComponent {
 
 const mapStateToProps = (state) => ({
   balances:        state.balances,
-  marketSummaries: state.marketSummaries,
+  marketSummaries: state.summaries,
 });
 export default connect(mapStateToProps)(Total);

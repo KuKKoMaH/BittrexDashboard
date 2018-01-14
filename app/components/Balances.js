@@ -74,7 +74,7 @@ class Balances extends React.PureComponent {
 
 const mapStateToProps = (state) => ({
   balances:        state.balances,
-  openOrders:      state.openOrders,
-  marketSummaries: state.marketSummaries,
+  openOrders:      state.orders,
+  marketSummaries: state.summaries,
 });
 export default connect(mapStateToProps)(Balances);

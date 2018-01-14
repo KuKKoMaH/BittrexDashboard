@@ -1,24 +1,24 @@
-import { SET_BALANCES, SET_MARKET_SUMMARIES, SET_OPEN_ORDERS } from "./constants";
+import { AUTH, SET_API_RESPONSE } from "./constants";
 
-const reducer = {
-  [SET_BALANCES]: ( state, action ) => ({
-    ...state,
-    balances: action.balances,
-  }),
-
-  [SET_OPEN_ORDERS]: ( state, action ) => ({
-    ...state,
-    openOrders: action.orders,
-  }),
-
-  [SET_MARKET_SUMMARIES]: ( state, action ) => ({
-    ...state,
-    marketSummaries: action.summaries,
-  }),
-
+const initialState = {
+  apiKey:    localStorage.apiKey,
+  apiSecret: localStorage.apiSecret,
 };
 
-export default ( state = [], action ) => {
+const reducer = {
+  [AUTH]: ( state, { apiKey, apiSecret } ) => ({
+    ...state,
+    apiKey,
+    apiSecret,
+  }),
+
+  [SET_API_RESPONSE]: ( state, { key, response } ) => ({
+    ...state,
+    [key]: response,
+  }),
+};
+
+export default ( state = initialState, action ) => {
   if (reducer[action.type]) return reducer[action.type](state, action);
   return state;
 };

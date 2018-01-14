@@ -16,7 +16,7 @@ class Reload extends React.PureComponent {
     const { dispatch } = this.props;
     Promise.all([
       dispatch(loadBalances()),
-      dispatch(loadOpenOrders()),
+      // dispatch(loadOpenOrders()),
       dispatch(loadMarketSummaries()),
     ]).then(() => this.setState({ loading: false }));
   }

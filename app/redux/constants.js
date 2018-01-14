@@ -1,3 +1,3 @@
-export const SET_BALANCES = 'SET_BALANCES';
-export const SET_OPEN_ORDERS = 'SET_OPEN_ORDERS';
-export const SET_MARKET_SUMMARIES = 'SET_MARKET_SUMMARIES';
+export const AUTH = 'AUTH';
+
+export const SET_API_RESPONSE = 'SET_API_RESPONSE';

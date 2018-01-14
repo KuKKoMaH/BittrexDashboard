@@ -1,17 +1,18 @@
 import API from '../API';
-import { SET_BALANCES, SET_MARKET_SUMMARIES, SET_OPEN_ORDERS } from './constants';
+import { AUTH, SET_API_RESPONSE } from './constants';
 
-export const loadBalances = () => (dispatch) => API('account/getbalances').then((balances) => dispatch({
-  type: SET_BALANCES,
-  balances,
+export const auth = ( apiKey, apiSecret ) => ({
+  type: AUTH,
+  apiKey,
+  apiSecret,
+});
+
+export const loadAPI = ( path, key ) => ( dispatch, getState ) => API(path, null, getState).then(( response ) => dispatch({
+  type: SET_API_RESPONSE,
+  key,
+  response,
 }));
 
-export const loadOpenOrders = () => (dispatch) => API('market/getopenorders').then((orders) => dispatch({
-  type: SET_OPEN_ORDERS,
-  orders,
-}));
-
-export const loadMarketSummaries = () => (dispatch) => API('public/getmarketsummaries').then((summaries) => dispatch({
-  type: SET_MARKET_SUMMARIES,
-  summaries,
-}));
+export const loadBalances = () => loadAPI('account/getbalances', 'balances');
+export const loadOpenOrders = () => loadAPI('market/getopenorders', 'orders');
+export const loadMarketSummaries = () => loadAPI('public/getmarketsummaries', 'summaries');

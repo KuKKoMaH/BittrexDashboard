@@ -1,13 +1,24 @@
-html, body
+
+@font-face {
+  font-family: 'DINPro';
+  src: url('../../fonts/DINPro-Regular.woff2') format('woff2'),
+          url('../../fonts/DINPro-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html, body, :global(#app)
   padding: 0
   margin: 0
+  height: 100%
 
 html
-  min-height: 100%
   position: relative
   -webkit-text-size-adjust: 100%
   -ms-text-size-adjust: 100%
+  font-family: 'DINPro', sans-serif;
 
 .app
-    margin: 0
-    padding: 0
+  margin: 0
+  padding: 0
+  height: 100%

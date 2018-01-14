@@ -6,17 +6,19 @@ import config from './config';
  *
  * @param {String} url
  * @param {Object} [params]
+ * @param {Function} getState
  * @return {Promise.<Object|Array.<*>>}
  */
-export default ( url, params = {} ) => {
+export default ( url, params = {}, getState ) => {
+  const state = getState();
   const nonce = new Date().getTime();
   const fullParams = {
     ...params,
-    apikey: config.API_KEY,
+    apikey: state.apiKey,
     nonce,
   };
   const fullUrl = config.API_URL + url + `?${stringify(fullParams)}`;
-  const apisign = hmacSHA512(fullUrl, config.API_SECRET);
+  const apisign = hmacSHA512(fullUrl, state.apiSecret);
   const options = {
     headers: new Headers({
       apisign,
