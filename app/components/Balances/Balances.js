@@ -31,11 +31,6 @@ class Balances extends React.PureComponent {
         const btcValue = marketSummary ? marketSummary.Last * balance.Balance : marketSummaries ? balance.Balance : 0;
         const market = markets && markets.find(market => market.MarketName === marketName);
         const orders = openOrders && openOrders.filter(order => order.Exchange === marketName && order.OrderType === 'LIMIT_SELL');
-        const totalBuy = ordersHistory ? ordersHistory.reduce((sum, order) => {
-          if (order.Exchange !== marketName) return sum;
-          if (order.OrderType === 'LIMIT_BUY') return sum + order.Price;
-          return sum - order.Price;
-        }, 0) : 0;
         return {
           logo:       market && market.LogoUrl,
           marketName: market && marketName,
@@ -46,7 +41,6 @@ class Balances extends React.PureComponent {
           reserved:   orders ? orders.reduce((sum, o) => sum + o.QuantityRemaining, 0) : 0,
           btcValue,
           change:     marketSummary ? (marketSummary.PrevDay / marketSummary.Last * 100 - 100) * -1 : 0,
-          totalBuy,
         };
       })
       .sort((a, b) => b.btcValue - a.btcValue);
@@ -92,7 +86,6 @@ class Balances extends React.PureComponent {
                 BTC value
                 <div className={styles.small}>% of total&nbsp;/&nbsp;24h change</div>
               </th>
-              <th>Total buy</th>
             </tr>
           </thead>
           <tbody>
@@ -117,7 +110,7 @@ class Balances extends React.PureComponent {
                   </div>
                 </td>
                 <td className={styles.currency}>
-                  <div className={styles.balance}>{balance.btcValue.toFixed(8)}</div>
+                  {balance.btcValue.toFixed(8)}
                   <div className={styles.small}>
                     <span
                       className={styles.percent}>{total && ((balance.btcValue / total * 100).toFixed(2) + '%')}</span>
@@ -125,7 +118,6 @@ class Balances extends React.PureComponent {
                     <span className={styles.change}>{this.renderChange(balance)}</span>
                   </div>
                 </td>
-                <td>{balance.totalBuy.toFixed(8)}</td>
               </tr>
             ))}
           </tbody>

@@ -5,7 +5,7 @@ import { loadBalances, loadMarketSummaries, loadOpenOrders, loadMarkets, loadOrd
 import Balances from '../Balances/Balances';
 import Total from '../Total';
 import Reload from '../Reload/Reload';
-import Header from '../Header/Header';
+// import Header from '../Header/Header';
 import { connect } from 'react-redux';
 
 class Dashboard extends React.Component {
@@ -22,7 +22,10 @@ class Dashboard extends React.Component {
     return (
       <div className={styles.app}>
         <Total />
-        <Balances />
+        <div className={styles.content}>
+          <div className={styles.balances}><Balances /></div>
+          <div className={styles.aside}>zxcv</div>
+        </div>
         <Reload />
       </div>
     );
