@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Dashboard.styl';
-import { loadBalances, loadMarketSummaries, loadOpenOrders, loadMarkets } from '../../redux/actions';
+import { loadBalances, loadMarketSummaries, loadOpenOrders, loadMarkets, loadOrdersHistory } from '../../redux/actions';
 
 import Balances from '../Balances/Balances';
 import Total from '../Total';
@@ -15,6 +15,7 @@ class Dashboard extends React.Component {
     dispatch(loadOpenOrders());
     dispatch(loadMarketSummaries());
     dispatch(loadMarkets());
+    dispatch(loadOrdersHistory());
   }
 
   render() {

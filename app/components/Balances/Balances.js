@@ -21,7 +21,7 @@ class Balances extends React.PureComponent {
   }
 
   updateBalances(props) {
-    const { openOrders, balances, marketSummaries, markets } = props;
+    const { openOrders, balances, marketSummaries, markets, ordersHistory } = props;
     if (!balances) return;
     const availableBalances = balances
       .filter(balance => balance.Balance)
@@ -31,7 +31,12 @@ class Balances extends React.PureComponent {
         const btcValue = marketSummary ? marketSummary.Last * balance.Balance : marketSummaries ? balance.Balance : 0;
         const market = markets && markets.find(market => market.MarketName === marketName);
         const orders = openOrders && openOrders.filter(order => order.Exchange === marketName && order.OrderType === 'LIMIT_SELL');
-        return ({
+        const totalBuy = ordersHistory ? ordersHistory.reduce((sum, order) => {
+          if (order.Exchange !== marketName) return sum;
+          if (order.OrderType === 'LIMIT_BUY') return sum + order.Price;
+          return sum - order.Price;
+        }, 0) : 0;
+        return {
           logo:       market && market.LogoUrl,
           marketName: market && marketName,
           currency:   balance.Currency,
@@ -40,8 +45,9 @@ class Balances extends React.PureComponent {
           pending:    balance.Pending,
           reserved:   orders ? orders.reduce((sum, o) => sum + o.QuantityRemaining, 0) : 0,
           btcValue,
-          change:     marketSummary ? marketSummary.PrevDay / marketSummary.Last * 100 - 100 : 0,
-        });
+          change:     marketSummary ? (marketSummary.PrevDay / marketSummary.Last * 100 - 100) * -1 : 0,
+          totalBuy,
+        };
       })
       .sort((a, b) => b.btcValue - a.btcValue);
     const total = marketSummaries ? availableBalances.reduce((sum, b) => sum + b.btcValue, 0) : 0;
@@ -63,11 +69,8 @@ class Balances extends React.PureComponent {
 
   renderLink(balance, children) {
     if (!balance.marketName) return children;
-    return (
-      <a href={`https://bittrex.com/Market/Index?MarketName=${balance.marketName}`} target='_blank' className={styles.link}>
-        {children}
-      </a>
-    );
+    const link = `https://bittrex.com/Market/Index?MarketName=${balance.marketName}`;
+    return <a href={link} target='_blank' className={styles.link}>{children}</a>;
   }
 
   render() {
@@ -87,8 +90,9 @@ class Balances extends React.PureComponent {
               </th>
               <th className={styles.currency}>
                 BTC value
-                <div className={styles.small}>% of total&nbsp;/&nbsp;change</div>
+                <div className={styles.small}>% of total&nbsp;/&nbsp;24h change</div>
               </th>
+              <th>Total buy</th>
             </tr>
           </thead>
           <tbody>
@@ -115,11 +119,13 @@ class Balances extends React.PureComponent {
                 <td className={styles.currency}>
                   <div className={styles.balance}>{balance.btcValue.toFixed(8)}</div>
                   <div className={styles.small}>
-                    <span className={styles.percent}>{total && ((balance.btcValue / total * 100).toFixed(2) + '%')}</span>
+                    <span
+                      className={styles.percent}>{total && ((balance.btcValue / total * 100).toFixed(2) + '%')}</span>
                     &nbsp;/&nbsp;
                     <span className={styles.change}>{this.renderChange(balance)}</span>
                   </div>
                 </td>
+                <td>{balance.totalBuy.toFixed(8)}</td>
               </tr>
             ))}
           </tbody>
@@ -134,5 +140,6 @@ const mapStateToProps = (state) => ({
   openOrders:      state.orders,
   marketSummaries: state.summaries,
   markets:         state.markets,
+  ordersHistory:   state.ordersHistory,
 });
 export default connect(mapStateToProps)(Balances);
