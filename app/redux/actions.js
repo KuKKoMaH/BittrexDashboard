@@ -16,3 +16,4 @@ export const loadAPI = ( path, key ) => ( dispatch, getState ) => API(path, null
 export const loadBalances = () => loadAPI('account/getbalances', 'balances');
 export const loadOpenOrders = () => loadAPI('market/getopenorders', 'orders');
 export const loadMarketSummaries = () => loadAPI('public/getmarketsummaries', 'summaries');
+export const loadMarkets = () => loadAPI('public/getmarkets', 'markets');

@@ -1,7 +1,7 @@
 import React from 'react';
 import { loadBalances, loadMarketSummaries, loadOpenOrders } from '../../redux/actions';
 import { connect } from 'react-redux';
-import Balances from '../Balances';
+import Balances from '../Balances/Balances';
 import Total from '../Total';
 import Reload from '../Reload/Reload';
 import style from './Header.styl';
