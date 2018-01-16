@@ -31,7 +31,12 @@ class Balances extends React.PureComponent {
         const marketSummary = marketSummaries && marketSummaries.find(market => market.MarketName === marketName);
         const btcValue = marketSummary ? marketSummary.Last * balance.Balance : marketSummaries ? balance.Balance : 0;
         const market = markets && markets.find(market => market.MarketName === marketName);
-        const orders = openOrders && openOrders.filter(order => order.Exchange === marketName && order.OrderType === 'LIMIT_SELL');
+        const reserved = openOrders ? openOrders.reduce((sum, order) => {
+          if (balance.Currency === 'BTC' && order.Exchange.indexOf(balance.Currency) === 0 && order.OrderType === 'LIMIT_BUY')
+            return sum + order.QuantityRemaining * order.Limit;
+          if (order.Exchange === marketName && order.OrderType === 'LIMIT_SELL') return sum + order.QuantityRemaining;
+          return sum;
+        }, 0) : 0;
         return {
           logo:       market && market.LogoUrl,
           marketName: market && marketName,
@@ -39,7 +44,7 @@ class Balances extends React.PureComponent {
           balance:    balance.Balance,
           available:  balance.Available,
           pending:    balance.Pending,
-          reserved:   orders ? orders.reduce((sum, o) => sum + o.QuantityRemaining, 0) : 0,
+          reserved,
           btcValue,
           change:     marketSummary ? (marketSummary.PrevDay / marketSummary.Last * 100 - 100) * -1 : 0,
         };
