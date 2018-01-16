@@ -3,9 +3,9 @@ import styles from './Dashboard.styl';
 import { loadBalances, loadMarketSummaries, loadOpenOrders, loadMarkets, loadOrdersHistory } from '../../redux/actions';
 
 import Balances from '../Balances/Balances';
-import Total from '../Total';
 import Reload from '../Reload/Reload';
-// import Header from '../Header/Header';
+import Orders from '../Orders/Orders';
+import Header from '../Header/Header';
 import { connect } from 'react-redux';
 
 class Dashboard extends React.Component {
@@ -21,12 +21,11 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div className={styles.app}>
-        <Total />
+        <Header />
         <div className={styles.content}>
           <div className={styles.balances}><Balances /></div>
-          <div className={styles.aside}></div>
+          <div className={styles.aside}><Orders /></div>
         </div>
-        <Reload />
       </div>
     );
   }

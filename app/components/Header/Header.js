@@ -2,8 +2,9 @@ import React from 'react';
 import { loadBalances, loadMarketSummaries, loadOpenOrders } from '../../redux/actions';
 import { connect } from 'react-redux';
 import Balances from '../Balances/Balances';
-import Total from '../Total';
+import Total from '../Total/Total';
 import Reload from '../Reload/Reload';
+import LogoutButton from '../LogoutButton/LogoutButton';
 import style from './Header.styl';
 
 class Header extends React.Component {
@@ -11,17 +12,14 @@ class Header extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(loadBalances());
-    dispatch(loadOpenOrders());
-    dispatch(loadMarketSummaries());
-  }
-
   render() {
     return (
       <div className={style.wrapper}>
-        Hello
+        <Reload />
+        <div className={style.content}>
+          <Total />
+        </div>
+        <LogoutButton />
       </div>
     );
   }

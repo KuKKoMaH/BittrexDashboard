@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import styles from './Balances.styl';
+import { selectCurrency } from '../../redux/actions';
 
 class Balances extends React.PureComponent {
   constructor(props) {
@@ -21,7 +22,7 @@ class Balances extends React.PureComponent {
   }
 
   updateBalances(props) {
-    const { openOrders, balances, marketSummaries, markets, ordersHistory } = props;
+    const { openOrders, balances, marketSummaries, markets } = props;
     if (!balances) return;
     const availableBalances = balances
       .filter(balance => balance.Balance)
@@ -48,6 +49,10 @@ class Balances extends React.PureComponent {
     this.setState({ balances: availableBalances, total });
   }
 
+  onSelectCurrency(currency) {
+    this.props.dispatch(selectCurrency(currency));
+  }
+
   renderChange(balance) {
     let className = 'fa ';
     if (balance.change) className += 'fa-long-arrow-' + (balance.change > 0 ? 'up ' + styles.up
@@ -61,23 +66,20 @@ class Balances extends React.PureComponent {
     );
   }
 
-  renderLink(balance, children) {
-    if (!balance.marketName) return children;
-    const link = `https://bittrex.com/Market/Index?MarketName=${balance.marketName}`;
-    return <a href={link} target='_blank' className={styles.link}>{children}</a>;
-  }
-
   render() {
     const { balances, total } = this.state;
+    const { currency } = this.props;
     if (!balances) return null;
+
     return (
       <div className={styles.wrapper}>
+        <h2>Account balances</h2>
         <table className={styles.table}>
           <thead>
             <tr>
               <th className={styles.index}>#</th>
               <th></th>
-              <th className={styles.title}>Currency</th>
+              <th className={styles.name}>Currency</th>
               <th className={styles.currency}>
                 Balance
                 <div className={styles.small}>available&nbsp;/&nbsp;pending&nbsp;/&nbsp;reserved</div>
@@ -86,19 +88,21 @@ class Balances extends React.PureComponent {
                 BTC value
                 <div className={styles.small}>% of total&nbsp;/&nbsp;24h change</div>
               </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {balances.map((balance, i) => (
-              <tr key={balance.currency}>
+              <tr
+                key={balance.currency}
+                onClick={() => this.onSelectCurrency(balance.currency)}
+                className={classnames(styles.row, currency === balance.currency && styles.selected)}
+              >
                 <td className={styles.index}>{i + 1}</td>
                 <td className={styles.logo}>
-                  {this.renderLink(
-                    balance,
-                    balance.logo && <img src={balance.logo} alt={balance.currency} className={styles.logoImg} />
-                  )}
+                  {balance.logo && <img src={balance.logo} alt={balance.currency} className={styles.logoImg} />}
                 </td>
-                <td className={styles.title}>{this.renderLink(balance, balance.currency)}</td>
+                <td className={styles.name}>{balance.currency}</td>
                 <td className={classnames(styles.currency)}>
                   <div>{balance.balance.toFixed(8)}</div>
                   <div className={styles.small}>
@@ -118,6 +122,15 @@ class Balances extends React.PureComponent {
                     <span className={styles.change}>{this.renderChange(balance)}</span>
                   </div>
                 </td>
+                <td className={styles.buttons}>
+                  <a
+                    href={`https://bittrex.com/Market/Index?MarketName=${balance.marketName}`}
+                    className={styles.button}
+                    target="_blank"
+                  >
+                    <i className="fa fa-external-link" />
+                  </a>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -128,10 +141,10 @@ class Balances extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
+  currency:        state.currency,
   balances:        state.balances,
   openOrders:      state.orders,
   marketSummaries: state.summaries,
   markets:         state.markets,
-  ordersHistory:   state.ordersHistory,
 });
 export default connect(mapStateToProps)(Balances);

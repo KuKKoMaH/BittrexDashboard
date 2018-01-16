@@ -1,10 +1,19 @@
 import API from '../API';
-import { AUTH, SET_API_RESPONSE } from './constants';
+import { AUTH, LOGOUT, SELECT_CURRENCY, SET_API_RESPONSE } from './constants';
 
 export const auth = (apiKey, apiSecret) => ({
   type: AUTH,
   apiKey,
   apiSecret,
+});
+
+export const logout = () => ({
+  type: LOGOUT,
+});
+
+export const selectCurrency = (currency) => ({
+  type: SELECT_CURRENCY,
+  currency,
 });
 
 export const loadAPI = (path, params, key) => (dispatch, getState) => API(path, params, getState).then((response) => dispatch({

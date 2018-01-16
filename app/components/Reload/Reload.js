@@ -1,6 +1,8 @@
 import React from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { loadBalances, loadMarketSummaries, loadOpenOrders } from '../../redux/actions';
+import styles from './Reload.styl';
 
 class Reload extends React.PureComponent {
   constructor(props) {
@@ -12,6 +14,7 @@ class Reload extends React.PureComponent {
   }
 
   onReload() {
+    if (this.state.loading) return;
     this.setState({ loading: true });
     const { dispatch } = this.props;
     Promise.all([
@@ -22,8 +25,13 @@ class Reload extends React.PureComponent {
   }
 
   render() {
-    if (this.state.loading) return null;
-    return <button onClick={this.onReload}>reload</button>;
+    const { loading } = this.state;
+
+    return (
+      <button onClick={this.onReload} className={classnames(styles.button, loading && styles.active)}>
+        <i className={classnames('fa fa-refresh', loading && 'fa-spin')} />
+      </button>
+    );
   }
 }
 

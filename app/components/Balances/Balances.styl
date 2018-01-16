@@ -1,3 +1,5 @@
+@import "../../styles/vars.styl";
+
 .wrapper
   padding: 0 12px
 
@@ -12,6 +14,18 @@
   th
     vertical-align: top
 
+  .row
+    cursor: pointer
+    anim()
+    &:hover
+      .buttons
+        opacity: 1
+      .name
+        text-decoration: underline
+
+  .selected
+    background: lighten($success, 90%)
+
   .logo
     min-width: 30px
     min-height: 30px
@@ -22,6 +36,7 @@
     margin: 0 auto
     max-width: 30px
     max-height: 30px
+    font-size: 0
 
   .index
     text-align: right
@@ -39,7 +54,7 @@
     color: #cccccc
     //opacity: .3
 
-  .title
+  .name
     //width: 100%
     text-align: left
     padding-left: 4px
@@ -51,10 +66,10 @@
     width: 50px
 
   .up
-    color: #66bb6a
+    color: $success
 
   .down
-    color: #ef5350
+    color: $danger
 
   .link
     border-bottom: 1px solid #0d47a1
@@ -62,3 +77,31 @@
 
     &:hover
       border-bottom: 1px solid transparent
+
+  .buttons
+    opacity: 0
+    padding-right: 4px
+    anim()
+
+  .button
+    margin-left: 4px
+    display: inline-block
+    vertical-align: middle
+    text-align: center
+    width: 24px
+    height: 24px
+    line-height: 24px
+    font-size: 14px
+    border-radius: 50%
+    border: 0
+    background: $secondary
+    color: lighten($secondary, 50%)
+    cursor: pointer
+    outline: 0
+    anim()
+
+    &:hover
+      background: darken($secondary, 10%)
+
+    &:active, &.active
+      background: darken($secondary, 30%)

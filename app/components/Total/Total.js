@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import styles from './Total.styl';
 
 class Total extends React.PureComponent {
   constructor(props) {
@@ -36,9 +37,8 @@ class Total extends React.PureComponent {
 
   render() {
     return (
-      <div className="jumbotron">
-        <h1>{this.state.totalBTC.toFixed(8)} BTC </h1>
-        <h2>{this.state.totalUSD.toFixed(2)} USD </h2>
+      <div className={styles.wrapper}>
+        <span className={styles.big}>{this.state.totalBTC.toFixed(8)} BTC</span> / {this.state.totalUSD.toFixed(2)} USD
       </div>
     );
   }
