@@ -24,7 +24,7 @@ class Dashboard extends React.Component {
         <Total />
         <div className={styles.content}>
           <div className={styles.balances}><Balances /></div>
-          <div className={styles.aside}>zxcv</div>
+          <div className={styles.aside}></div>
         </div>
         <Reload />
       </div>
