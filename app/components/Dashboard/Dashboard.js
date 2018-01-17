@@ -1,12 +1,18 @@
 import React from 'react';
-import styles from './Dashboard.styl';
-import { loadBalances, loadMarketSummaries, loadOpenOrders, loadMarkets, loadOrdersHistory } from '../../redux/actions';
-
+import { connect } from 'react-redux';
+import {
+  loadBalances,
+  loadMarketSummaries,
+  loadOpenOrders,
+  loadMarkets,
+  loadOrdersHistory,
+  loadBTCPrice
+} from '../../redux/actions';
 import Balances from '../Balances/Balances';
-import Reload from '../Reload/Reload';
 import Orders from '../Orders/Orders';
 import Header from '../Header/Header';
-import { connect } from 'react-redux';
+import Timeline from '../Timeline/Timeline';
+import styles from './Dashboard.styl';
 
 class Dashboard extends React.Component {
   componentDidMount() {
@@ -16,6 +22,7 @@ class Dashboard extends React.Component {
     dispatch(loadMarketSummaries());
     dispatch(loadMarkets());
     dispatch(loadOrdersHistory());
+    dispatch(loadBTCPrice());
   }
 
   render() {
@@ -24,7 +31,10 @@ class Dashboard extends React.Component {
         <Header />
         <div className={styles.content}>
           <div className={styles.balances}><Balances /></div>
-          <div className={styles.aside}><Orders /></div>
+          <div className={styles.aside}>
+            <Timeline />
+            <Orders />
+          </div>
         </div>
       </div>
     );

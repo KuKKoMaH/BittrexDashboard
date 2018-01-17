@@ -5,11 +5,19 @@ import config from './config';
 /**
  *
  * @param {String} url
+ * @param {Object} [options]¬
+ * @return {Promise<any>}
+ */
+const request = ( url, options ) => fetch(url, options).then(response => response.json());
+
+/**
+ *
+ * @param {String} url
  * @param {Object} [params]
  * @param {Function} getState
  * @return {Promise.<Object|Array.<*>>}
  */
-export default ( url, params = {}, getState ) => {
+export const bittrex = ( url, params = {}, getState ) => {
   const state = getState();
   const nonce = new Date().getTime();
   const fullParams = {
@@ -17,7 +25,7 @@ export default ( url, params = {}, getState ) => {
     apikey: state.apiKey,
     nonce,
   };
-  const fullUrl = config.API_URL + url + `?${stringify(fullParams)}`;
+  const fullUrl = config.BITTREX_API_URL + url + `?${stringify(fullParams)}`;
   const apisign = hmacSHA512(fullUrl, state.apiSecret);
   const options = {
     headers: new Headers({
@@ -26,7 +34,10 @@ export default ( url, params = {}, getState ) => {
       'content-type': 'application/x-www-form-urlencoded',
     }),
   };
-  return fetch(config.PROXY_URL + fullUrl, options)
-    .then(response => response.json())
-    .then(response => response.result);
-}
+  return request(config.PROXY_URL + fullUrl, options).then(response => response.result);
+};
+
+export const bittrexV2 = ( url, params = {} ) => {
+  const fullUrl = config.BITTREX_V2_API_URL + url + `?${stringify(params)}`;
+  return request(config.PROXY_URL + fullUrl).then(response => response.result);
+};
