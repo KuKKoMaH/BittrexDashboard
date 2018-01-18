@@ -1,8 +1,10 @@
 import { AUTH, LOGOUT, SELECT_CURRENCY, SET_API_RESPONSE } from './constants';
 
 const initialState = {
-  apiKey:    localStorage.apiKey,
-  apiSecret: localStorage.apiSecret,
+  bittrexKey:    localStorage.bittrexKey,
+  bittrexSecret: localStorage.bittrexSecret,
+  binanceKey:    localStorage.binanceKey,
+  binanceSecret: localStorage.binanceSecret,
 };
 
 const reducer = {
@@ -14,8 +16,10 @@ const reducer = {
 
   [LOGOUT]: (state) => ({
     ...state,
-    apiKey:    null,
-    apiSecret: null,
+    bittrexKey:    state.bittrexKey,
+    bittrexSecret: state.bittrexSecret,
+    binanceKey:    state.binanceKey,
+    binanceSecret: state.binanceSecret,
   }),
 
   [SELECT_CURRENCY]: (state, { currency }) => ({

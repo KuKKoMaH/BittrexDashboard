@@ -46,7 +46,7 @@ class Login extends React.Component {
             value={apiSecret}
             onChange={this.onChange('apiSecret')}
           />
-          <button className={styles.button}>Войти</button>
+          <button className={styles.submit}>Войти</button>
         </form>
       </div>
     );

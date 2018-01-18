@@ -1,10 +1,9 @@
 import React from 'react';
-import { loadBalances, loadMarketSummaries, loadOpenOrders } from '../../redux/actions';
 import { connect } from 'react-redux';
-import Balances from '../Balances/Balances';
 import Total from '../Total/Total';
 import Reload from '../Reload/Reload';
-import LogoutButton from '../LogoutButton/LogoutButton';
+import Profile from '../Profile/Profile';
+import BTCValue from '../BTCValue/BTCValue';
 import style from './Header.styl';
 
 class Header extends React.Component {
@@ -18,8 +17,9 @@ class Header extends React.Component {
         <Reload />
         <div className={style.content}>
           <Total />
+          <BTCValue />
         </div>
-        <LogoutButton />
+        <Profile />
       </div>
     );
   }

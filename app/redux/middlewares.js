@@ -2,10 +2,12 @@ import { AUTH, LOGOUT } from './constants';
 
 export const saveAuth = store => next => action => {
   if (action.type === AUTH) {
-    localStorage.apiKey = action.apiKey;
-    localStorage.apiSecret = action.apiSecret;
+    const keys = ['bittrexKey', 'bittrexSecret', 'binanceKey', 'binanceSecret',];
+    keys.forEach((key) => {
+      localStorage[key] = action[key];
+    });
   }
-  if(action.type === LOGOUT) {
+  if (action.type === LOGOUT) {
     delete localStorage.apiKey;
     delete localStorage.apiSecret;
   }

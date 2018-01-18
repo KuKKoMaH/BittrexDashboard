@@ -1,23 +1,50 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Login from '../Login/Login';
-import Dashboard from '../Dashboard/Dashboard';
-import './App.styl';
+import {
+  loadBalances,
+  loadMarketSummaries,
+  loadOpenOrders,
+  loadMarkets,
+  loadOrdersHistory,
+  loadBTCPrice,
+  loadBinanceBalances
+} from '../../redux/actions';
+import Balances from '../Balances/Balances';
+import Orders from '../Orders/Orders';
+import Header from '../Header/Header';
+// import Timeline from '../Timeline/Timeline';
+import styles from './App.styl';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch(loadBTCPrice());
+    // dispatch(loadBalances());
+    // dispatch(loadOpenOrders());
+    // dispatch(loadMarketSummaries());
+    // dispatch(loadMarkets());
+    // dispatch(loadOrdersHistory());
+    // dispatch(loadBTCPrice());
+
+    // dispatch(loadBinanceBalances());
   }
 
   render() {
-    const { apiKey, apiSecret } = this.props;
-    if (!apiKey || !apiSecret) return <Login />;
-    return <Dashboard />;
+    return (
+      <div className={styles.app}>
+        <Header />
+        <div className={styles.content}>
+          <div className={styles.balances}><Balances /></div>
+          <div className={styles.aside}>
+            {/*<Timeline />*/}
+            <Orders />
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 
-const mapStateToProps = (state) => ({
-  apiKey:    state.apiKey,
-  apiSecret: state.apiSecret,
-});
+const mapStateToProps = (state) => ({});
 export default connect(mapStateToProps)(App);

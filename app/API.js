@@ -23,11 +23,11 @@ export const bittrex = (url, params = {}, getState) => {
   const nonce = new Date().getTime();
   const fullParams = {
     ...params,
-    apikey: state.apiKey,
+    apikey: state.bittrexKey,
     nonce,
   };
   const fullUrl = config.BITTREX_API_URL + url + `?${stringify(fullParams)}`;
-  const apisign = hmacSHA512(fullUrl, state.apiSecret);
+  const apisign = hmacSHA512(fullUrl, state.bittrexSecret);
   const options = {
     headers: new Headers({
       apisign,
