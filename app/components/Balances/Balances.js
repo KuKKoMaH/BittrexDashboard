@@ -25,7 +25,7 @@ class Balances extends React.PureComponent {
     const { openOrders, balances, marketSummaries, markets } = props;
     if (!balances) return;
     const availableBalances = balances
-      .filter(balance => balance.Balance)
+      // .filter(balance => balance.Balance)
       .map((balance) => {
         const marketName = `BTC-${balance.Currency}`;
         const marketSummary = marketSummaries && marketSummaries.find(market => market.MarketName === marketName);
