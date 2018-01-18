@@ -24,7 +24,7 @@ export const setApiResponse = (key, response) => ({
   response,
 });
 
-const loadBittrex = (path, params, key) => (dispatch, getState) => API.bittrex(path, params, getState)
+const loadBittrex = (path, params, key) => (dispatch, getState) => API.bittrex(path, params, null, getState)
   .then(response => dispatch(setApiResponse(key, response)));
 
 const loadBittrexV2 = (path, params, key) => (dispatch) => API.bittrexV2(path, params)

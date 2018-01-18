@@ -9,16 +9,17 @@ import config from './config';
  * @param {Object} [options]¬
  * @return {Promise<any>}
  */
-const request = (url, options) => fetch(url, options).then(response => response.json());
+const request = ( url, options ) => fetch(url, options).then(response => response.json());
 
 /**
  *
  * @param {String} url
  * @param {Object} [params]
+ * @param {Object} [options]
  * @param {Function} getState
  * @return {Promise.<Object|Array.<*>>}
  */
-export const bittrex = (url, params = {}, getState) => {
+export const bittrex = ( url, params = {}, options, getState ) => {
   const state = getState();
   const nonce = new Date().getTime();
   const fullParams = {
@@ -28,32 +29,34 @@ export const bittrex = (url, params = {}, getState) => {
   };
   const fullUrl = config.BITTREX_API_URL + url + `?${stringify(fullParams)}`;
   const apisign = hmacSHA512(fullUrl, state.bittrexSecret);
-  const options = {
+  const fullOptions = {
+    ...options,
     headers: new Headers({
       apisign,
       'Accept':       '*/*',
       'content-type': 'application/x-www-form-urlencoded',
     }),
   };
-  return request(config.PROXY_URL + fullUrl, options).then(response => response.result);
+  return request(config.PROXY_URL + fullUrl, fullOptions).then(response => response.result);
 };
 
-export const bittrexV2 = (url, params = {}) => {
+export const bittrexV2 = ( url, params = {}, options ) => {
   const fullUrl = config.BITTREX_V2_API_URL + url + `?${stringify(params)}`;
   return request(config.PROXY_URL + fullUrl).then(response => response.result);
 };
 
-export const binance = (url, params, options) => {
+export const binance = ( url, params, options, getState ) => {
+  const state = getState();
   const timestamp = new Date().getTime();
   const fullParams = { ...params, timestamp, };
   fullParams.signature = hmacSHA256(
     stringify(fullParams),
-    config.API_SECRET
+    state.binanceSecret,
   ).toString();
   const fullOptions = {
     ...options,
     headers: new Headers({
-      'X-MBX-APIKEY': config.API_KEY,
+      'X-MBX-APIKEY': state.binanceKey,
     }),
   };
 
