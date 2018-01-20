@@ -9,7 +9,8 @@ import {
   loadBTCPrice,
   loadBinanceBalances
 } from '../../redux/actions';
-import Balances from '../Balances/Balances';
+import BittrexBalances from '../BittrexBalances/BittrexBalances';
+import BinanceBalances from '../BinanceBalances/BinanceBalances';
 import Orders from '../Orders/Orders';
 import Header from '../Header/Header';
 // import Timeline from '../Timeline/Timeline';
@@ -20,14 +21,14 @@ class App extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(loadBTCPrice());
-    // dispatch(loadBalances());
-    // dispatch(loadOpenOrders());
-    // dispatch(loadMarketSummaries());
-    // dispatch(loadMarkets());
-    // dispatch(loadOrdersHistory());
-    // dispatch(loadBTCPrice());
+    dispatch(loadBalances());
+    dispatch(loadOpenOrders());
+    dispatch(loadMarketSummaries());
+    dispatch(loadMarkets());
+    dispatch(loadOrdersHistory());
+    dispatch(loadBTCPrice());
 
-    // dispatch(loadBinanceBalances());
+    dispatch(loadBinanceBalances());
   }
 
   render() {
@@ -35,7 +36,10 @@ class App extends React.Component {
       <div className={styles.app}>
         <Header />
         <div className={styles.content}>
-          <div className={styles.balances}><Balances /></div>
+          <div className={styles.balances}>
+            <BittrexBalances />
+            <BinanceBalances />
+          </div>
           <div className={styles.aside}>
             {/*<Timeline />*/}
             <Orders />
@@ -46,5 +50,5 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = ( state ) => ({});
 export default connect(mapStateToProps)(App);

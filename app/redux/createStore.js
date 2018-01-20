@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import reducer from './reducer';
 import { saveAuth } from './middlewares';
+import getInitialState from './initialState';
 
 export default () => {
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -10,5 +11,5 @@ export default () => {
     thunk,
     saveAuth,
   );
-  return createStore(reducer, composeEnhancers(middlewares));
+  return createStore(reducer, getInitialState(), composeEnhancers(middlewares));
 }

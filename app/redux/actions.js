@@ -40,4 +40,4 @@ export const loadMarketSummaries = () => loadBittrex('public/getmarketsummaries'
 export const loadMarkets = () => loadBittrex('public/getmarkets', null, 'markets');
 export const loadBTCPrice = () => loadBittrexV2('pub/currencies/GetBTCPrice', null, 'BTCPrice');
 
-export const loadBinanceBalances = () => loadBinance('v3/account', null, 'binanceBalances');
+export const loadBinanceBalances = () => loadBinance('v3/account', null, null, 'binanceBalances');

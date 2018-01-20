@@ -1,12 +1,5 @@
 import { AUTH, LOGOUT, SELECT_CURRENCY, SET_API_RESPONSE } from './constants';
 
-const initialState = {
-  bittrexKey:    localStorage.bittrexKey,
-  bittrexSecret: localStorage.bittrexSecret,
-  binanceKey:    localStorage.binanceKey,
-  binanceSecret: localStorage.binanceSecret,
-};
-
 const reducer = {
   [AUTH]: (state, { apiKey, apiSecret }) => ({
     ...state,
@@ -33,7 +26,7 @@ const reducer = {
   }),
 };
 
-export default (state = initialState, action) => {
+export default (state, action) => {
   if (reducer[action.type]) return reducer[action.type](state, action);
   return state;
 };

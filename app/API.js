@@ -61,5 +61,5 @@ export const binance = ( url, params, options, getState ) => {
   };
 
   const fullUrl = config.BINANCE_API_URL + url + `?${stringify(fullParams)}`;
-  return request(config.PROXY_URL + fullUrl, fullOptions).then(response => response.result);
+  return request(config.PROXY_URL + fullUrl, fullOptions);
 };
