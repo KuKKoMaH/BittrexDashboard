@@ -1,7 +1,7 @@
 import * as API from '../API';
 import { AUTH, LOGOUT, SELECT_CURRENCY, SET_API_RESPONSE } from './constants';
 
-export const auth = ({ bittrexKey, bittrexSecret, binanceKey, binanceSecret, }) => ({
+export const auth = ( { bittrexKey, bittrexSecret, binanceKey, binanceSecret, } ) => ({
   type: AUTH,
   bittrexKey,
   bittrexSecret,
@@ -13,24 +13,24 @@ export const logout = () => ({
   type: LOGOUT,
 });
 
-export const selectCurrency = (currency) => ({
+export const selectCurrency = ( currency ) => ({
   type: SELECT_CURRENCY,
   currency,
 });
 
-export const setApiResponse = (key, response) => ({
+export const setApiResponse = ( key, response ) => ({
   type: SET_API_RESPONSE,
   key,
   response,
 });
 
-const loadBittrex = (path, params, key) => (dispatch, getState) => API.bittrex(path, params, null, getState)
+const loadBittrex = ( path, params, key ) => ( dispatch, getState ) => API.bittrex(path, params, null, getState)
   .then(response => dispatch(setApiResponse(key, response)));
 
-const loadBittrexV2 = (path, params, key) => (dispatch) => API.bittrexV2(path, params)
+const loadBittrexV2 = ( path, params, key ) => ( dispatch ) => API.bittrexV2(path, params)
   .then(response => dispatch(setApiResponse(key, response)));
 
-const loadBinance = (path, params, options, key) => (dispatch, getState) => API.binance(path, params, options, getState)
+const loadBinance = ( path, params, options, key ) => ( dispatch, getState ) => API.binance(path, params, options, getState)
   .then(response => dispatch(setApiResponse(key, response)));
 
 export const loadBalances = () => loadBittrex('account/getbalances', null, 'balances');
