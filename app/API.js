@@ -21,6 +21,7 @@ const request = ( url, options ) => fetch(url, options).then(response => respons
  */
 export const bittrex = ( url, params = {}, options, getState ) => {
   const state = getState();
+  if(!state.binanceKey || !state.bittrexSecret) throw new Error('bittrex keys missing');
   const nonce = new Date().getTime();
   const fullParams = {
     ...params,
@@ -47,6 +48,7 @@ export const bittrexV2 = ( url, params = {}, options ) => {
 
 export const binance = ( url, params, options, getState ) => {
   const state = getState();
+  if(!state.binanceKey || !state.binanceSecret) throw new Error('binance keys missing');
   const timestamp = new Date().getTime();
   const fullParams = { ...params, timestamp, };
   fullParams.signature = hmacSHA256(
