@@ -25,7 +25,7 @@ class App extends React.Component {
     dispatch(loadOpenOrders());
     dispatch(loadMarketSummaries());
     dispatch(loadMarkets());
-    dispatch(loadOrdersHistory());
+    // dispatch(loadOrdersHistory());
     dispatch(loadBTCPrice());
 
     dispatch(loadBinanceBalances());
@@ -33,19 +33,19 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className={styles.app}>
-        <Header />
-        <div className={styles.content}>
-          <div className={styles.balances}>
-            <BittrexBalances />
-            <BinanceBalances />
-          </div>
-          <div className={styles.aside}>
-            {/*<Timeline />*/}
-            <Orders />
+        <div className={styles.app}>
+          <Header />
+          <div className={styles.content}>
+            <div className={styles.balances}>
+              <BittrexBalances />
+              <BinanceBalances />
+            </div>
+            <div className={styles.aside}>
+              {/*<Timeline />*/}
+              <Orders />
+            </div>
           </div>
         </div>
-      </div>
     );
   }
 }

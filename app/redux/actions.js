@@ -1,5 +1,5 @@
 import * as API from '../API';
-import { AUTH, LOGOUT, SELECT_CURRENCY, SET_API_RESPONSE } from './constants';
+import { AUTH, LOGOUT, SELECT_CURRENCY, SET_API_RESPONSE, SET_ORDERS_HISTORY } from './constants';
 
 export const auth = ( { bittrexKey, bittrexSecret, binanceKey, binanceSecret, } ) => ({
   type: AUTH,
@@ -22,6 +22,11 @@ export const setApiResponse = ( key, response ) => ({
   type: SET_API_RESPONSE,
   key,
   response,
+});
+
+export const setOrdersHistory = ( orders ) => ({
+  type: SET_ORDERS_HISTORY,
+  orders,
 });
 
 const loadBittrex = ( path, params, key ) => ( dispatch, getState ) => API.bittrex(path, params, null, getState)

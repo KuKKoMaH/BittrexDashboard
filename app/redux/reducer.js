@@ -1,13 +1,13 @@
-import { AUTH, LOGOUT, SELECT_CURRENCY, SET_API_RESPONSE } from './constants';
+import { AUTH, LOGOUT, SELECT_CURRENCY, SET_API_RESPONSE, SET_ORDERS_HISTORY } from './constants';
 
 const reducer = {
-  [AUTH]: (state, { apiKey, apiSecret }) => ({
+  [AUTH]: ( state, { apiKey, apiSecret } ) => ({
     ...state,
     apiKey,
     apiSecret,
   }),
 
-  [LOGOUT]: (state) => ({
+  [LOGOUT]: ( state ) => ({
     ...state,
     bittrexKey:    state.bittrexKey,
     bittrexSecret: state.bittrexSecret,
@@ -15,18 +15,23 @@ const reducer = {
     binanceSecret: state.binanceSecret,
   }),
 
-  [SELECT_CURRENCY]: (state, { currency }) => ({
+  [SELECT_CURRENCY]: ( state, { currency } ) => ({
     ...state,
     currency,
   }),
 
-  [SET_API_RESPONSE]: (state, { key, response }) => ({
+  [SET_API_RESPONSE]: ( state, { key, response } ) => ({
     ...state,
     [key]: response,
   }),
+
+  [SET_ORDERS_HISTORY]: ( state, { orders } ) => ({
+    ...state,
+    ordersHistory: orders,
+  })
 };
 
-export default (state, action) => {
+export default ( state, action ) => {
   if (reducer[action.type]) return reducer[action.type](state, action);
   return state;
 };

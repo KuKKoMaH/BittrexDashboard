@@ -1,0 +1,28 @@
+@import '../../styles/vars.styl'
+
+.button
+  display: inline-block
+  vertical-align: middle
+  position: relative
+  background: $secondary
+  color: lighten($secondary, 50%)
+  overflow: hidden
+  font-size: 16px
+  padding: 6px 8px
+  margin-left: 12px
+  anim()
+
+  &:hover
+    background: darken($secondary, 10%)
+
+  &:active, &.active
+    background: darken($secondary, 30%)
+
+.input
+  position: absolute
+  opacity: 0
+  right: 0
+  top: 0
+  width: 200%
+  height: 200%
+  cursor: pointer

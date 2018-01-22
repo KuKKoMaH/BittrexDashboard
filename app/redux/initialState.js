@@ -1,3 +1,5 @@
+import parseJson from "../helpers/parseJson";
+
 const migrateKeys = () => {
   const { apiKey, apiSecret } = localStorage;
   if (apiKey && apiSecret) {
@@ -10,10 +12,13 @@ const migrateKeys = () => {
 
 export default () => {
   migrateKeys();
+  const bittrexKey = localStorage.bittrexKey;
+  const ordersHistory = parseJson(localStorage[`${bittrexKey}-ordersHistory`]);
   return {
-    bittrexKey:    localStorage.bittrexKey,
+    bittrexKey,
     bittrexSecret: localStorage.bittrexSecret,
     binanceKey:    localStorage.binanceKey,
     binanceSecret: localStorage.binanceSecret,
+    ordersHistory,
   };
 }
