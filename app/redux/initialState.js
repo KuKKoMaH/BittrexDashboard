@@ -10,15 +10,23 @@ const migrateKeys = () => {
   }
 };
 
+const getOrdersHistory = () => {
+  const ordersHistory = parseJson(localStorage[`${localStorage.bittrexKey}-ordersHistory`]);
+  if (!ordersHistory) return null;
+  return ordersHistory.map(order => ({
+    ...order,
+    created: new Date(order.created),
+    closed:  new Date(order.closed),
+  }));
+};
+
 export default () => {
   migrateKeys();
-  const bittrexKey = localStorage.bittrexKey;
-  const ordersHistory = parseJson(localStorage[`${bittrexKey}-ordersHistory`]);
   return {
-    bittrexKey,
+    bittrexKey:    localStorage.bittrexKey,
     bittrexSecret: localStorage.bittrexSecret,
     binanceKey:    localStorage.binanceKey,
     binanceSecret: localStorage.binanceSecret,
-    ordersHistory,
+    ordersHistory: getOrdersHistory(),
   };
 }

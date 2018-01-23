@@ -48,7 +48,6 @@ class BinanceBalances extends React.PureComponent {
   render() {
     const { balances } = this.state;
     if (!balances) return null;
-    console.log(balances);
     return (
       <div>
         <h2>Binance balances</h2>

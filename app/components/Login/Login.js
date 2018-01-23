@@ -18,7 +18,6 @@ class Login extends React.Component {
 
   onAuth( e ) {
     e.preventDefault();
-    console.log(this.state);
     const { apiKey, apiSecret } = this.state;
     if (!apiKey || !apiSecret) return;
     this.props.dispatch(auth(apiKey, apiSecret));

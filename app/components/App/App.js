@@ -25,7 +25,7 @@ class App extends React.Component {
     dispatch(loadOpenOrders());
     dispatch(loadMarketSummaries());
     dispatch(loadMarkets());
-    // dispatch(loadOrdersHistory());
+    dispatch(loadOrdersHistory());
     dispatch(loadBTCPrice());
 
     dispatch(loadBinanceBalances());

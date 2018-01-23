@@ -1,5 +1,5 @@
 import * as API from '../API';
-import { AUTH, LOGOUT, SELECT_CURRENCY, SET_API_RESPONSE, SET_ORDERS_HISTORY } from './constants';
+import { AUTH, LOGOUT, SELECT_CURRENCY, SET_API_RESPONSE, ADD_ORDERS_HISTORY } from './constants';
 
 export const auth = ( { bittrexKey, bittrexSecret, binanceKey, binanceSecret, } ) => ({
   type: AUTH,
@@ -24,8 +24,8 @@ export const setApiResponse = ( key, response ) => ({
   response,
 });
 
-export const setOrdersHistory = ( orders ) => ({
-  type: SET_ORDERS_HISTORY,
+export const addOrdersHistory = ( orders ) => ({
+  type: ADD_ORDERS_HISTORY,
   orders,
 });
 
@@ -40,9 +40,25 @@ const loadBinance = ( path, params, options, key ) => ( dispatch, getState ) => 
 
 export const loadBalances = () => loadBittrex('account/getbalances', null, 'balances');
 export const loadOpenOrders = () => loadBittrex('market/getopenorders', null, 'orders');
-export const loadOrdersHistory = () => loadBittrex('account/getorderhistory', null, 'ordersHistory');
 export const loadMarketSummaries = () => loadBittrex('public/getmarketsummaries', null, 'summaries');
 export const loadMarkets = () => loadBittrex('public/getmarkets', null, 'markets');
 export const loadBTCPrice = () => loadBittrexV2('pub/currencies/GetBTCPrice', null, 'BTCPrice');
 
 export const loadBinanceBalances = () => loadBinance('v3/account', null, null, 'binanceBalances');
+
+export const loadOrdersHistory = () => ( dispatch, getState ) => {
+  API.bittrex('account/getorderhistory', null, null, getState).then(( response ) => {
+    const orders = response.map(order => ({
+      id:         order.OrderUuid,
+      created:    new Date(order.TimeStamp),
+      closed:     new Date(order.Closed),
+      type:       order.OrderType,
+      market:     order.Exchange,
+      commission: order.Commission,
+      limit:      order.Limit,
+      price:      order.Price,
+      quantity:   order.Quantity
+    }));
+    dispatch(addOrdersHistory(orders));
+  })
+};

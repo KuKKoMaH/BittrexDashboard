@@ -1,4 +1,4 @@
-import { AUTH, LOGOUT, SET_ORDERS_HISTORY } from './constants';
+import { AUTH, LOGOUT, ADD_ORDERS_HISTORY } from './constants';
 
 export const saveAuth = store => next => action => {
   if (action.type === AUTH) {
@@ -17,7 +17,7 @@ export const saveAuth = store => next => action => {
 export const saveOrdersHistory = store => next => action => {
   next(action);
 
-  if (action.type === SET_ORDERS_HISTORY) {
+  if (action.type === ADD_ORDERS_HISTORY) {
     const { bittrexKey, ordersHistory } = store.getState();
     const key = `${bittrexKey}-ordersHistory`;
     if (ordersHistory) {

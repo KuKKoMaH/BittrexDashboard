@@ -31,7 +31,6 @@ class Total extends React.PureComponent {
       totalBTC += marketSummary ? marketSummary.Last * balance.Balance : balance.Balance;
     });
     const USDTtoBTC = marketSummaries.find(m => m.MarketName === 'USDT-BTC');
-    console.log(totalBTC, USDTtoBTC, totalBTC * USDTtoBTC.Last);
     this.setState({ totalBTC, totalUSD: totalBTC * USDTtoBTC.Last });
   }
 

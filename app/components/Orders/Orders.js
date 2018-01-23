@@ -1,12 +1,27 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import styles from './Orders.styl';
 import { selectCurrency } from '../../redux/actions';
-import { convertDate } from '../../helpers/date';
+import { dateToStr } from '../../helpers/date';
 import UploadOrdersHistory from '../UploadOrdersHistory/UploadOrdersHistory';
 
 class Orders extends React.PureComponent {
+  static propTypes = {
+    ordersHistory: PropTypes.arrayOf(PropTypes.shape({
+      id:         PropTypes.string,
+      created:    PropTypes.object,
+      closed:     PropTypes.object,
+      type:       PropTypes.string,
+      market:     PropTypes.string,
+      commission: PropTypes.number,
+      limit:      PropTypes.number,
+      price:      PropTypes.number,
+      quantity:   PropTypes.number,
+    })),
+  };
+
   constructor( props ) {
     super(props);
 
@@ -20,7 +35,7 @@ class Orders extends React.PureComponent {
   renderList() {
     const { ordersHistory, currency } = this.props;
     if (!ordersHistory) return null;
-    const orders = currency ? ordersHistory.filter(o => o.Exchange.includes(currency)) : ordersHistory;
+    const orders = currency ? ordersHistory.filter(o => o.market.includes(currency)) : ordersHistory;
     return (
       <table className={styles.table}>
         <thead>
@@ -38,23 +53,23 @@ class Orders extends React.PureComponent {
         </thead>
         <tbody>
         {orders.map(( order, i ) => (
-          <tr key={order.OrderUuid}>
+          <tr key={order.id}>
             <td className={styles.index}>{i + 1}</td>
-            <td className={styles.date}>{convertDate(order.TimeStamp)}</td>
-            <td className={styles.date}>{convertDate(order.Closed)}</td>
+            <td className={styles.date}>{dateToStr(order.created)}</td>
+            <td className={styles.date}>{dateToStr(order.closed)}</td>
             <td>
-              <a href={`https://bittrex.com/Market/Index?MarketName=${order.Exchange}`} target='_blank'>
-                {order.Exchange}
+              <a href={`https://bittrex.com/Market/Index?MarketName=${order.market}`} target='_blank'>
+                {order.market}
               </a>
             </td>
             <td className={styles.currency}>
-              {(order.Price + order.Commission).toFixed(8)}
-              <div className={styles.small}>{order.Quantity.toFixed(8)} * {order.PricePerUnit.toFixed(8)}</div>
+              {(order.price + order.commission).toFixed(8)}
+              <div className={styles.small}>{order.quantity.toFixed(8)} * {order.limit.toFixed(8)}</div>
             </td>
             <td className={styles.type}>
-              {order.OrderType === 'LIMIT_BUY'
-                ? <i className={`fa fa-download ${styles.buy}`} title={order.OrderType} />
-                : <i className={`fa fa-upload ${styles.sell}`} title={order.OrderType} />
+              {order.type === 'LIMIT_BUY'
+                ? <i className={`fa fa-download ${styles.buy}`} title={order.type} />
+                : <i className={`fa fa-upload ${styles.sell}`} title={order.type} />
               }
             </td>
           </tr>

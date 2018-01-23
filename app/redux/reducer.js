@@ -1,4 +1,5 @@
-import { AUTH, LOGOUT, SELECT_CURRENCY, SET_API_RESPONSE, SET_ORDERS_HISTORY } from './constants';
+import arraysUnion from "../helpers/arraysUnion";
+import { AUTH, LOGOUT, SELECT_CURRENCY, SET_API_RESPONSE, ADD_ORDERS_HISTORY } from './constants';
 
 const reducer = {
   [AUTH]: ( state, { apiKey, apiSecret } ) => ({
@@ -25,10 +26,14 @@ const reducer = {
     [key]: response,
   }),
 
-  [SET_ORDERS_HISTORY]: ( state, { orders } ) => ({
-    ...state,
-    ordersHistory: orders,
-  })
+  [ADD_ORDERS_HISTORY]: ( state, { orders } ) => {
+    const ordersHistory = arraysUnion(( el1, el2 ) => el1.id === el2.id, orders, state.ordersHistory)
+      .sort(( el1, el2 ) => el2.closed - el1.closed);
+    return {
+      ...state,
+      ordersHistory
+    };
+  },
 };
 
 export default ( state, action ) => {
