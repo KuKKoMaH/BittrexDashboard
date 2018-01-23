@@ -50,8 +50,8 @@ export const loadOrdersHistory = () => ( dispatch, getState ) => {
   API.bittrex('account/getorderhistory', null, null, getState).then(( response ) => {
     const orders = response.map(order => ({
       id:         order.OrderUuid,
-      created:    new Date(order.TimeStamp),
-      closed:     new Date(order.Closed),
+      created:    new Date(`${order.TimeStamp}+0000`),
+      closed:     new Date(`${order.Closed}+0000`),
       type:       order.OrderType,
       market:     order.Exchange,
       commission: order.Commission,

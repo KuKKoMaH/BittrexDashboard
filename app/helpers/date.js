@@ -18,7 +18,7 @@ export const convertDate = ( dateStr ) => {
 export const convertUSADate = ( dateStr ) => convertDate(new Date(dateStr).toISOString());
 
 export const dateToStr = date => {
-  const day = date.getDay();
+  const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
   const hours = date.getHours();

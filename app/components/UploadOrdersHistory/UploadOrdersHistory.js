@@ -29,8 +29,8 @@ class UploadOrdersHistory extends React.PureComponent {
         if (order.length !== 9) return;
         orders.push({
           id:         order[0],
-          created:    new Date(order[7]),
-          closed:     new Date(order[8]),
+          created:    new Date(`${order[7]}+0000`),
+          closed:     new Date(`${order[8]}+0000`),
           type:       order[2],
           market:     order[1],
           commission: +order[5],
