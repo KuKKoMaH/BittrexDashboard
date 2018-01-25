@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { ChartCanvas, Chart } from "react-stockcharts";
 import { CandlestickSeries } from "react-stockcharts/lib/series";
 import { XAxis, YAxis } from "react-stockcharts/lib/axes";
@@ -8,41 +8,18 @@ import { last, timeIntervalBarWidth } from "react-stockcharts/lib/utils";
 import { scaleTime } from "d3-scale";
 import { utcDay } from "d3-time";
 
-import { bittrexV2 } from "../../API";
-
 class Timeline extends React.PureComponent {
+  static propTypes = {
+    data: PropTypes.arrayOf(PropTypes.shape()),
+  };
+
   constructor( props ) {
     super(props);
-
-    this.state = {
-      data: null
-    };
-  }
-
-  componentWillReceiveProps( nextProps ) {
-    if (nextProps.currency) {
-      bittrexV2('pub/market/GetTicks', {
-        marketName:   'BTC-SC',
-        tickInterval: 'day'
-      }).then(response => this.setState({
-        data: response.map(( i ) => ({
-          date:     new Date(i.T),
-          open:     i.O,
-          high:     i.H,
-          low:      i.D,
-          close:    i.C,
-          volume:   i.BV,
-          split:    '',
-          dividend: '',
-        })),
-      }));
-    }
   }
 
   render() {
-    const { width, ratio, currency } = this.props;
-    const { data } = this.state;
-    if (!data || !currency) return null;
+    const { width, ratio, data } = this.props;
+    if (!data) return null;
 
     const xAccessor = d => d.date;
     const xExtents = [
@@ -71,7 +48,4 @@ class Timeline extends React.PureComponent {
   }
 }
 
-const mapStateToProps = ( state ) => ({
-  currency: state.currency,
-});
-export default fitWidth(connect(mapStateToProps)(Timeline));
+export default fitWidth(Timeline);

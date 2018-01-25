@@ -11,9 +11,9 @@ import {
 } from '../../redux/actions';
 import BittrexBalances from '../BittrexBalances/BittrexBalances';
 import BinanceBalances from '../BinanceBalances/BinanceBalances';
+import CurrencyPanel from "../CurrencyPanel/CurrencyPanel";
 import Orders from '../Orders/Orders';
 import Header from '../Header/Header';
-// import Timeline from '../Timeline/Timeline';
 import styles from './App.styl';
 
 class App extends React.Component {
@@ -33,22 +33,23 @@ class App extends React.Component {
 
   render() {
     return (
-        <div className={styles.app}>
-          <Header />
-          <div className={styles.content}>
-            <div className={styles.balances}>
-              <BittrexBalances />
-              <BinanceBalances />
-            </div>
-            <div className={styles.aside}>
-              {/*<Timeline />*/}
-              <Orders />
-            </div>
+      <div className={styles.app}>
+        <Header />
+        <div className={styles.content}>
+          <div className={styles.balances}>
+            <BittrexBalances />
+            <BinanceBalances />
+          </div>
+          <div className={styles.aside}>
+            {this.props.currency ? <CurrencyPanel currency={this.props.currency} /> : <Orders />}
           </div>
         </div>
+      </div>
     );
   }
 }
 
-const mapStateToProps = ( state ) => ({});
+const mapStateToProps = ( state ) => ({
+  currency: state.currency,
+});
 export default connect(mapStateToProps)(App);
