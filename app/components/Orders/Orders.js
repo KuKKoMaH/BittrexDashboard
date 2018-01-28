@@ -9,6 +9,7 @@ import UploadOrdersHistory from '../UploadOrdersHistory/UploadOrdersHistory';
 
 class Orders extends React.PureComponent {
   static propTypes = {
+    currency:      PropTypes.string,
     ordersHistory: PropTypes.arrayOf(PropTypes.shape({
       id:         PropTypes.string,
       created:    PropTypes.object,
@@ -101,6 +102,5 @@ class Orders extends React.PureComponent {
 
 const mapStateToProps = ( state ) => ({
   ordersHistory: state.ordersHistory,
-  currency:      state.currency,
 });
 export default connect(mapStateToProps)(Orders);

@@ -28,5 +28,6 @@ export default () => {
     binanceKey:    localStorage.binanceKey,
     binanceSecret: localStorage.binanceSecret,
     ordersHistory: getOrdersHistory(),
+    currency:      'ZEC',
   };
 }
