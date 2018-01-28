@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { bittrexV2 } from "../../API";
-import Timeline from '../Timeline/Timeline';
+import Chart from "../Chart/Chart";
+// import Timeline from '../Timeline/Timeline';
 import Orders from '../Orders/Orders';
 import styles from './CurrencyPanel.styl';
 
@@ -64,7 +65,8 @@ export default class CurrencyPanel extends React.PureComponent {
           <option value="fiveMin">fiveMin</option>
           <option value="thirtyMin">thirtyMin</option>
         </select>
-        <Timeline data={this.state.timeline} />
+        {/*<Timeline data={this.state.timeline} />*/}
+        {this.state.timeline && <Chart data={this.state.timeline} />}
         <Orders currency={this.props.currency} />
       </div>
     );
